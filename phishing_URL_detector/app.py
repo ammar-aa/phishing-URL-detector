@@ -4,12 +4,18 @@ import numpy as np
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
+from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
 
 model = joblib.load("phishing_URL_detector/model.pkl")
+df=pd.read_csv(phishing_URL_detector/dataset.csv)
+df.drop('index',axis=1,inplace=True)
+X=df.drop('Result',axis=1)
+y=df['Result']
+X_train ,X_test ,y_train ,y_test =train_test_split(X ,y ,test_size=0.2 ,stratify=y ,random_state=42)
 
 st.title("Phishing Website Detector")
-st.markdown("##### By supervision of Dr. Mahmoud Yasin")
+st.markdown("#### By supervision of Dr. Mahmoud Yasin")
 
 st.subheader("Our model performance")
 report = classification_report(y_test, y_pred, output_dict=True)
