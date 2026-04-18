@@ -11,6 +11,17 @@ model = joblib.load("phishing_URL_detector/model.pkl")
 st.title("Phishing Website Detector")
 st.markdown("##### By supervision of Dr. Mahmoud Yasin")
 
+st.subheader("Our model performance")
+report = classification_report(y_test, y_pred, output_dict=True)
+df_report = pd.DataFrame(report).transpose()
+fig, ax = plt.subplots()
+sns.heatmap(cm, annot=True, fmt='d', cmap='Blues', ax=ax)
+ax.set_xlabel("Predicted")
+ax.set_ylabel("Actual")
+st.pyplot(fig)
+st.subheader("Classification Report")
+st.dataframe(df_report)
+
 mode = st.radio("Choose Input Mode:", ["Manual Input", "Upload File"])
 
 if mode == "Manual Input":
