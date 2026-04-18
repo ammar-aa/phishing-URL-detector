@@ -13,7 +13,7 @@ df.drop('index',axis=1,inplace=True)
 X=df.drop('Result',axis=1)
 y=df['Result']
 X_train ,X_test ,y_train ,y_test =train_test_split(X ,y ,test_size=0.2 ,stratify=y ,random_state=42)
-y_pred=predict(X_test)
+y_pred=model.predict(X_test)
 st.title("Phishing Website Detector")
 st.markdown("#### By supervision of Dr. Mahmoud Yasin")
 
