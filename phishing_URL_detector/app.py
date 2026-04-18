@@ -6,7 +6,7 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
 
-model = joblib.load("model.pkl")
+model = joblib.load("phishing_URL_detector/model.pkl")
 
 st.title("Phishing Website Detector")
 st.markdown("##### By supervision of Dr. Mahmoud Yasin")
