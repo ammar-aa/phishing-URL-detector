@@ -8,10 +8,10 @@ import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import classification_report, confusion_matrix
 
-# ---------------- Load model ----------------
+
 model = joblib.load("phishing_URL_detector/model.pkl")
 
-# ---------------- Load & prepare data (cached) ----------------
+
 @st.cache_data
 def load_data():
     df = pd.read_csv("phishing_URL_detector/dataset.csv")
@@ -24,18 +24,22 @@ def load_data():
 
 X_train, X_test, y_train, y_test = load_data()
 
-# ---------------- Evaluation ----------------
+
 y_pred = model.predict(X_test)
 
 cm = confusion_matrix(y_test, y_pred)
 report = classification_report(y_test, y_pred, output_dict=True)
 df_report = pd.DataFrame(report).transpose()
 
-# ---------------- UI ----------------
+
 st.title("Phishing Website Detector")
 st.caption("Supervised by Dr. Mahmoud Yasin")
 
 st.subheader("Model Performance")
+
+
+st.subheader("Classification Report")
+st.dataframe(df_report, use_container_width=True)
 
 # Confusion Matrix
 fig, ax = plt.subplots()
@@ -46,16 +50,10 @@ ax.set_ylabel("Actual")
 
 st.pyplot(fig)
 
-# Classification Report
-st.subheader("Classification Report")
-st.dataframe(df_report, use_container_width=True)
 
-# ---------------- Mode ----------------
 mode = st.radio("Choose Input Mode:", ["Manual Input", "Upload File"])
 
-# =========================================================
-# 🔹 Manual Input
-# =========================================================
+
 if mode == "Manual Input":
 
     st.subheader("Enter Features")
@@ -85,9 +83,7 @@ if mode == "Manual Input":
         else:
             st.error("⚠️ Phishing Website")
 
-# =========================================================
-# 🔹 Batch Mode
-# =========================================================
+
 else:
 
     st.subheader("Upload CSV / Excel / JSON")
@@ -103,7 +99,7 @@ else:
         else:
             df = pd.read_json(file)
 
-        # تنظيف الأعمدة
+        
         df = df.drop(columns=["index", "Result"], errors="ignore")
 
         st.write("Preview:")
@@ -121,7 +117,6 @@ else:
             st.subheader("Results")
             st.dataframe(df, use_container_width=True)
 
-            # stats
             st.write("Legitimate:", (df["Prediction"] == "Legitimate").sum())
             st.write("Phishing:", (df["Prediction"] == "Phishing").sum())
 
