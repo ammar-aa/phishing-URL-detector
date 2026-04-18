@@ -35,15 +35,15 @@ df_report = pd.DataFrame(report).transpose()
 st.title("Phishing Website Detector")
 st.caption("Supervised by Dr. Mahmoud Yasin")
 
-st.subheader("Model Performance")
+st.subheader("Our model performance")
 
 
 st.subheader("Classification Report")
 st.dataframe(df_report, use_container_width=True)
 
-# Confusion Matrix
+
 fig, ax = plt.subplots()
-sns.heatmap(cm, annot=True, fmt='d', cmap='Blues', ax=ax)
+sns.heatmap(cm, annot=True, fmt='d', cmap='copper', ax=ax)
 
 ax.set_xlabel("Predicted")
 ax.set_ylabel("Actual")
@@ -79,9 +79,9 @@ if mode == "Manual Input":
         pred = model.predict(input_data)[0]
 
         if pred == 1:
-            st.success("✅ Legitimate Website")
+            st.success("Legitimate Website :D")
         else:
-            st.error("⚠️ Phishing Website")
+            st.error("Phishing Website :'(")
 
 
 else:
