@@ -32,16 +32,16 @@ report = classification_report(y_test, y_pred, output_dict=True)
 df_report = pd.DataFrame(report).transpose()
 
 
-st.title("Phishing Website Detector")
-st.caption("Supervised by Dr. Mahmoud Yasin")
+st.markdown("# Phishing Website Detector")
+st.markdown("##### :rainbow[Supervised by Dr. Mahmoud Yasin]")
 
-st.subheader("Our model performance")
+st.subheader("Our model performance:")
 
 
-st.subheader("Classification Report")
+st.markdown("#### Classification Report")
 st.dataframe(df_report, use_container_width=True)
 
-
+st.markdown("#### Confusion matrix:")
 fig, ax = plt.subplots()
 sns.heatmap(cm, annot=True, fmt='d', cmap='copper', ax=ax)
 
