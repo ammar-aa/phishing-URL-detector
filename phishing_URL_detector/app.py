@@ -8,13 +8,11 @@ import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import classification_report, confusion_matrix
 
-
-model = joblib.load("phishing_URL_detector/model.pkl")
-
+model = joblib.load("model.pkl")
 
 @st.cache_data
 def load_data():
-    df = pd.read_csv("phishing_URL_detector/dataset.csv")
+    df = pd.read_csv("dataset.csv")
     df = df.drop(columns=["index"], errors="ignore")
 
     X = df.drop("Result", axis=1)
@@ -24,35 +22,32 @@ def load_data():
 
 X_train, X_test, y_train, y_test = load_data()
 
-
 y_pred = model.predict(X_test)
 
 cm = confusion_matrix(y_test, y_pred)
 report = classification_report(y_test, y_pred, output_dict=True)
 df_report = pd.DataFrame(report).transpose()
 
-
 st.markdown("# Phishing Website Detector")
 st.markdown("##### :rainbow[Supervised by Dr. Mahmoud Yasin]")
 
-st.subheader("Our model performance:")
+st.subheader("Our Model Performance:")
 
-
-st.markdown("#### Classification Report")
+st.markdown("#### Classification Report:")
 st.dataframe(df_report, use_container_width=True)
 
-st.markdown("#### Confusion matrix:")
-fig, ax = plt.subplots()
-sns.heatmap(cm, annot=True, fmt='d', cmap='copper', ax=ax)
 
-ax.set_xlabel("Predicted")
-ax.set_ylabel("Actual")
-
-st.pyplot(fig)
+col1, col2, col3 = st.columns([1, 2, 1]) 
+with col2:
+    st.markdown("#### confusion matrix :")
+    fig, ax = plt.subplots(figsize=(5,4))
+    sns.heatmap(cm, annot=True, fmt='d', cmap='copper', ax=ax)
+    ax.set_xlabel("Predicted")
+    ax.set_ylabel("Actual")
+    st.pyplot(fig)
 
 
 mode = st.radio("Choose Input Mode:", ["Manual Input", "Upload File"])
-
 
 if mode == "Manual Input":
 
@@ -79,10 +74,9 @@ if mode == "Manual Input":
         pred = model.predict(input_data)[0]
 
         if pred == 1:
-            st.success("Legitimate Website :D")
+            st.success("✅ Legitimate Website")
         else:
-            st.error("Phishing Website :'(")
-
+            st.error("⚠️ Phishing Website")
 
 else:
 
@@ -99,7 +93,6 @@ else:
         else:
             df = pd.read_json(file)
 
-        
         df = df.drop(columns=["index", "Result"], errors="ignore")
 
         st.write("Preview:")
@@ -117,6 +110,7 @@ else:
             st.subheader("Results")
             st.dataframe(df, use_container_width=True)
 
+            # stats
             st.write("Legitimate:", (df["Prediction"] == "Legitimate").sum())
             st.write("Phishing:", (df["Prediction"] == "Phishing").sum())
 
