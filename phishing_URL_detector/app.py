@@ -8,11 +8,11 @@ import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import classification_report, confusion_matrix
 
-model = joblib.load("model.pkl")
+model = joblib.load("phishing_URL_detector/model.pkl")
 
 @st.cache_data
 def load_data():
-    df = pd.read_csv("dataset.csv")
+    df = pd.read_csv("phishing_URL_detector/dataset.csv")
     df = df.drop(columns=["index"], errors="ignore")
 
     X = df.drop("Result", axis=1)
